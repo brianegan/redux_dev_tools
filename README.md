@@ -28,14 +28,18 @@ A simple Flutter app that allows you to Increment and Decrement a counter.
 int addOneReducer(int state, action) => state + 1;
 
 // For production mode, this is how you should create your Store.
-final store = new Store(addReducer);
+final store = new Store(addReducer, initialState: 0);
 
 // In Dev Mode, however, if you want to hook up to Time-Traveling 
 // Dev Tools, create a `DevToolsStore` instead!
 //
 // It will act exactly like your normal Store, but give you super powers
 // to travel back and forth in time throughout your app States!
-final store = new DevToolsStore(addReducer);
+// 
+// Remember: By itself this will beef up your Store, but will not provide
+// a UI to Time Travel. See the libraries listed above to learn how to
+// connect your Redux store to a UI! 
+final store = new DevToolsStore(addReducer, initialState: 0);
 ```
 
 ## Credits

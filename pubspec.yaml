@@ -1,6 +1,6 @@
 name: redux_dev_tools
 description: Time Travel Dev Tools for Dart Redux
-version: 0.1.0
+version: 0.1.1
 homepage: https://gitlab.com/brianegan/redux_dev_tools
 author: Brian Egan <brian@brianegan.com>
 
