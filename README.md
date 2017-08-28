@@ -19,7 +19,7 @@ You can write your own UI to travel in time, or use one of the existing options 
 
 A simple Flutter app that allows you to Increment and Decrement a counter.
 
-
+![A screenshot of the Dev Tools in Action](https://gitlab.com/brianegan/redux_dev_tools/raw/master/devtools.gif)
 
 ## Usage
 
