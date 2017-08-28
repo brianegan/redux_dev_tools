@@ -1,5 +1,7 @@
 # redux_dev_tools
 
+[![build status](https://gitlab.com/brianegan/redux_dev_tools/badges/master/build.svg)](https://gitlab.com/brianegan/redux_dev_tools/commits/master)  [![coverage report](https://gitlab.com/brianegan/redux_dev_tools/badges/master/coverage.svg)](https://brianegan.gitlab.io/redux_dev_tools/coverage/)
+
 A [Redux](https://pub.dartlang.org/packages/redux) `Store` with a [Delorean](http://www.imdb.com/title/tt0088763/). 
 
 This library allows you to create a `DevToolsStore` during dev mode in place of a normal [Redux](https://pub.dartlang.org/packages/redux) Store. This `DevToolsStore` will act exactly like a normal Store at first, with one catch: It will allow you to travel back and forth throughout the State of your application!
@@ -13,7 +15,7 @@ You can write your own UI to travel in time, or use one of the existing options 
     
 ## Demo
 
-### Flutter 
+### Flutter
 
 A simple Flutter app that allows you to Increment and Decrement a counter.
 
