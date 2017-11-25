@@ -9,7 +9,7 @@ dart_task:
 - dartfmt
 script:
   - set -e
-  - pub run test test/rxdart_test.dart
+  - pub run test test/redux_dev_tools_test.dart
   - pub get --packages-dir
   - pub global activate coverage
   - pub global run coverage:collect_coverage --port=8111 -o coverage.json --resume-isolates --wait-paused &
