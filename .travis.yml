@@ -1,16 +1,14 @@
 language: dart
-# Speed up builds by using containerization.
 sudo: false
 dart:
 - stable
 - dev
 with_content_shell: false
-before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+dart_task:
+- dartanalyzer: --fatal-warnings lib
+- dartfmt
 script:
   - set -e
-  - sh tool/check_format.sh
   - pub run test test/rxdart_test.dart
   - pub get --packages-dir
   - pub global activate coverage
