@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+  - Move to Github
+
 ## 0.1.1
 
   - Update README
