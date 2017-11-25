@@ -1,5 +1,7 @@
 # redux_dev_tools
 
+[![Build Status](https://travis-ci.org/brianegan/redux_dev_tools.svg?branch=master)](https://travis-ci.org/brianegan/redux_dev_tools) [![codecov](https://codecov.io/gh/brianegan/redux_dev_tools/branch/master/graph/badge.svg)](https://codecov.io/gh/brianegan/redux_dev_tools)
+
 A [Redux](https://pub.dartlang.org/packages/redux) `Store` with a [Delorean](http://www.imdb.com/title/tt0088763/). 
 
 This library allows you to create a `DevToolsStore` during dev mode in place of a normal [Redux](https://pub.dartlang.org/packages/redux) Store. This `DevToolsStore` will act exactly like a normal Store at first, with one catch: It will allow you to travel back and forth throughout the State of your application!
