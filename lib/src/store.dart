@@ -52,7 +52,7 @@ class DevToolsStore<S> implements Store<S> {
       devToolsReducer,
       initialState: devToolsState,
       middleware: middleware
-          .map((middleware) => new DevToolsMiddleware(this, middleware))
+          .map((middleware) => new DevToolsMiddleware<S>(this, middleware))
           .toList(),
       syncStream: syncStream,
     );

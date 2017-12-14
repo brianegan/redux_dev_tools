@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+  - Fix Type signature for Middleware
+
 ## 0.1.2
 
   - Move to Github

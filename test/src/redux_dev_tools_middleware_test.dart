@@ -28,14 +28,20 @@ void main() {
       final Reducer<TestState> reducer = (state, action) {
         return new TestState("Reduced?");
       };
-      final Middleware<TestState> middleware = (store, action, next) {
+      final Middleware<TestState> middleware = (
+        Store<TestState> store,
+        action,
+        NextDispatcher next,
+      ) {
         counter += 1;
         next(action);
       };
-      final store = new DevToolsStore<TestState>(reducer,
-          initialState: new TestState(),
-          middleware: [middleware],
-          syncStream: true);
+      final store = new DevToolsStore<TestState>(
+        reducer,
+        initialState: new TestState(),
+        middleware: [middleware],
+        syncStream: true,
+      );
 
       store.dispatch(Actions.HeyHey);
 
