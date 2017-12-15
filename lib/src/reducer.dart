@@ -61,7 +61,7 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
         return new DevToolsState<S>(
           recomputeStates(state.computedStates, state.stagedActions),
           state.stagedActions,
-          state.stagedActions.length - 1,
+          state.currentPosition,
         );
 
       default:

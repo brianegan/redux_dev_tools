@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+  - Don't advance position on recompute
+
 ## 0.1.3
 
   - Fix Type signature for Middleware
