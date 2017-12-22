@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+  - Bump version of Redux and add distinct option to DevToolsStore
+
 ## 0.1.4
 
   - Don't advance position on recompute

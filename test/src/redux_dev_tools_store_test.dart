@@ -134,6 +134,27 @@ void main() {
       expect(actual, store.state);
     });
 
+    test('store does not emit an onChange if distinct', () {
+      String stringReducer(String state, dynamic action) =>
+          action is String ? action : "notFound";
+
+      final action = 'test';
+      final states = <String>[];
+      final store = new DevToolsStore<String>(
+        stringReducer,
+        initialState: 'hello',
+        syncStream: true,
+        distinct: true
+      );
+      store.onChange.listen((state) => states.add(state));
+
+      // Dispatch two actions. Only one should be emitted b/c distinct is true
+      store.dispatch(action);
+      store.dispatch(action);
+
+      expect(states, <String>[action]);
+    });
+
     test(
         "store should work with both dev tools actions and application actions",
         () {
