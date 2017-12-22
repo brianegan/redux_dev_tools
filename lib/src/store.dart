@@ -36,6 +36,7 @@ import 'package:redux_dev_tools/src/state.dart';
 ///     // to travel back and forth in time throughout your app States!
 ///     final store = new DevToolsStore(addReducer);
 class DevToolsStore<S> implements Store<S> {
+  final bool _distinct;
   Store<DevToolsState<S>> _devToolsStore;
 
   DevToolsStore(
@@ -43,19 +44,19 @@ class DevToolsStore<S> implements Store<S> {
     S initialState,
     List<Middleware<S>> middleware: const [],
     bool syncStream: false,
-  }) {
+    bool distinct: false,
+  })
+      : _distinct = distinct {
     final devToolsState = new DevToolsState<S>([initialState], [], 0);
 
     final DevToolsReducer<S> devToolsReducer = new DevToolsReducer<S>(reducer);
 
-    _devToolsStore = new Store<DevToolsState<S>>(
-      devToolsReducer,
-      initialState: devToolsState,
-      middleware: middleware
-          .map((middleware) => new DevToolsMiddleware<S>(this, middleware))
-          .toList(),
-      syncStream: syncStream,
-    );
+    _devToolsStore = new Store<DevToolsState<S>>(devToolsReducer,
+        initialState: devToolsState,
+        middleware: middleware
+            .map((middleware) => new DevToolsMiddleware<S>(this, middleware))
+            .toList(),
+        syncStream: syncStream);
 
     dispatch(new DevToolsAction.init());
   }
@@ -74,8 +75,12 @@ class DevToolsStore<S> implements Store<S> {
   }
 
   @override
-  Stream<S> get onChange => _devToolsStore.onChange
-      .map((devToolsState) => devToolsState.currentAppState);
+  Stream<S> get onChange {
+    final stream = _devToolsStore.onChange
+        .map((devToolsState) => devToolsState.currentAppState);
+
+    return _distinct ? stream.distinct() : stream;
+  }
 
   @override
   S get state => _devToolsStore.state.currentAppState;
