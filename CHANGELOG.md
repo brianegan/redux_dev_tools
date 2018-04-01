@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+  - Fix Dart 2 environment constraint
+
 ## 0.3.0
 
   - Dart 2 / Redux 3.0.0 Support
