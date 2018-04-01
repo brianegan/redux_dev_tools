@@ -48,7 +48,7 @@ class TestReducer extends ReducerClass<TestState> {
   var updated = false;
 
   @override
-  TestState call(TestState state, action) {
+  TestState call(TestState state, dynamic action) {
     if (action is TestAction) {
       if (updated) {
         return new TestState("updated ${action.message}");

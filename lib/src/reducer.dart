@@ -12,17 +12,17 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
   DevToolsReducer(this.appReducer);
 
   @override
-  DevToolsState<S> call(DevToolsState<S> state, action) {
+  DevToolsState<S> call(DevToolsState<S> state, dynamic action) {
     assert(action is DevToolsAction,
         'When using the Dev Tools, all actions must be wrapped as a DevToolsAction');
 
-    final DevToolsAction devToolsAction = action;
+    final DevToolsAction devToolsAction = action as DevToolsAction;
 
     switch (devToolsAction.type) {
       case DevToolsActionTypes.Init:
         final S initialState = appReducer(state.currentAppState, action);
 
-        return new DevToolsState<S>([initialState], [action], 0);
+        return new DevToolsState<S>([initialState], <dynamic>[action], 0);
 
       case DevToolsActionTypes.PerformAction:
         final addToEnd =
@@ -43,12 +43,12 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
       case DevToolsActionTypes.Reset:
         return new DevToolsState<S>(
           [state.savedState],
-          [devToolsAction],
+          <dynamic>[devToolsAction],
           0,
         );
 
       case DevToolsActionTypes.Save:
-        return new DevToolsState<S>([state.currentAppState], [action], 0);
+        return new DevToolsState<S>([state.currentAppState], <dynamic>[action], 0);
 
       case DevToolsActionTypes.JumpToState:
         return new DevToolsState<S>(
@@ -70,11 +70,11 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
   }
 
   List<S> recomputeStates(List<S> computedStates, List<dynamic> stagedActions) {
-    final recomputedStates = new List(computedStates.length);
+    final recomputedStates = new List<S>(computedStates.length);
     S currentState = computedStates[0];
 
     for (int i = 0; i < computedStates.length; i++) {
-      final currentAction = stagedActions[i];
+      final dynamic currentAction = stagedActions[i];
       currentState = appReducer(currentState, currentAction);
       recomputedStates[i] = currentState;
     }

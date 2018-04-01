@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/src/actions.dart';
 import 'package:redux_dev_tools/src/middleware.dart';
@@ -47,15 +48,16 @@ class DevToolsStore<S> implements Store<S> {
     bool distinct: false,
   })
       : _distinct = distinct {
-    final devToolsState = new DevToolsState<S>([initialState], [], 0);
+    final devToolsState = new DevToolsState<S>([initialState], <dynamic>[], 0);
 
     final DevToolsReducer<S> devToolsReducer = new DevToolsReducer<S>(reducer);
 
     _devToolsStore = new Store<DevToolsState<S>>(devToolsReducer,
         initialState: devToolsState,
-        middleware: middleware
-            .map((middleware) => new DevToolsMiddleware<S>(this, middleware))
-            .toList(),
+        middleware: new List<Middleware<DevToolsState<S>>>.generate(
+          middleware.length,
+          (index) => new DevToolsMiddleware<S>(this, middleware[index]),
+        ),
         syncStream: syncStream);
 
     dispatch(new DevToolsAction.init());
@@ -66,7 +68,7 @@ class DevToolsStore<S> implements Store<S> {
   Reducer<S> reducer;
 
   @override
-  void dispatch(action) {
+  void dispatch(dynamic action) {
     if (action is DevToolsAction) {
       _devToolsStore.dispatch(action);
     } else {

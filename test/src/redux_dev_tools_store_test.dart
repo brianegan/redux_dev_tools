@@ -21,7 +21,7 @@ void main() {
     test(
         "when an action is fired, the corresponding reducer should be called and update the state of the application",
         () {
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
           return new TestState("reduced");
         }
@@ -42,7 +42,7 @@ void main() {
       final helloReducer1 = "helloReducer1";
       final helloReducer2 = "helloReducer2";
 
-      final Reducer<TestState> reducer1 = (state, action) {
+      final Reducer<TestState> reducer1 = (state, dynamic action) {
         if (action is TestAction && action.type == helloReducer1) {
           return new TestState("oh hai");
         }
@@ -50,7 +50,7 @@ void main() {
         return state;
       };
 
-      final Reducer<TestState> reducer2 = (state, action) {
+      final Reducer<TestState> reducer2 = (state, dynamic action) {
         if (action is TestAction && action.type == helloReducer2) {
           return new TestState("mark");
         }
@@ -69,7 +69,7 @@ void main() {
     });
 
     test("subscribers should be notified when the state changes", () async {
-      final store = new DevToolsStore((state, action) => new TestState(),
+      final store = new DevToolsStore<TestState>((state, dynamic action) => new TestState(),
           initialState: new TestState(), syncStream: true);
       var subscriber1Called = false;
       var subscriber2Called = false;
@@ -88,8 +88,8 @@ void main() {
     });
 
     test("the store should not notify unsubscribed objects", () {
-      final store = new DevToolsStore(
-        (state, action) => new TestState(),
+      final store = new DevToolsStore<TestState>(
+        (state, dynamic action) => new TestState(),
         initialState: new TestState(),
         syncStream: true,
       );
@@ -113,7 +113,7 @@ void main() {
     });
 
     test("store should pass the current state to subscribers", () {
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
           return new TestState("oh hai");
         }
@@ -158,7 +158,7 @@ void main() {
     test(
         "store should work with both dev tools actions and application actions",
         () {
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
           return new TestState("oh hai");
         }

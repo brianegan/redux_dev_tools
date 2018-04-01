@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+  - Dart 2 / Redux 3.0.0 Support
+
 ## 0.2.0
 
   - Bump version of Redux and add distinct option to DevToolsStore

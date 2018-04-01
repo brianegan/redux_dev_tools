@@ -31,8 +31,8 @@ class DevToolsState<S> {
     List<dynamic> stagedActions,
     Reducer<S> appReducer,
   ) {
-    final newStates = []..addAll(computedStates);
-    final newActions = []..addAll(stagedActions);
+    final newStates = <S>[]..addAll(computedStates);
+    final newActions = <dynamic>[]..addAll(stagedActions);
 
     newStates.add(
       appReducer(

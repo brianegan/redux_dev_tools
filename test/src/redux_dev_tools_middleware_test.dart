@@ -25,12 +25,12 @@ void main() {
   group('DevTools Middleware', () {
     test("unwrapped actions should be run through a store's middleware", () {
       var counter = 0;
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         return new TestState("Reduced?");
       };
       final Middleware<TestState> middleware = (
         Store<TestState> store,
-        action,
+        dynamic action,
         NextDispatcher next,
       ) {
         counter += 1;
@@ -55,20 +55,20 @@ void main() {
       var counter = 0;
       final order = <String>[];
 
-      final Middleware<TestState> middleWare1 = (state, action, next) {
+      final Middleware<TestState> middleWare1 = (state, dynamic action, next) {
         counter += 1;
         order.add("first");
         next(action);
         order.add("third");
       };
 
-      final Middleware<TestState> middleWare2 = (store, action, next) {
+      final Middleware<TestState> middleWare2 = (store, dynamic action, next) {
         counter += 1;
         order.add("second");
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         if (action == Actions.HeyHey) {
           return new TestState("howdy!");
         }
@@ -94,22 +94,22 @@ void main() {
     test(
         "async middleware should be able to dispatch follow-up unwrapped actions that travel through the remaining middleware",
         () async {
-      var counter = 0;
-      var fetchComplete;
+      int counter = 0;
+      Future<dynamic> fetchComplete;
       final order = <String>[];
 
-      final Middleware<TestState> fetchMiddleware = (store, action, next) {
+      final Middleware<TestState> fetchMiddleware = (store, dynamic action, next) {
         counter += 1;
 
         if (action == Actions.CallApi) {
           next(Actions.Fetching);
-          fetchComplete = new Future(() => next(Actions.FetchComplete));
+          fetchComplete = new Future<dynamic>(() => next(Actions.FetchComplete));
         }
 
         next(action);
       };
 
-      final Middleware<TestState> loggerMiddleware = (store, action, next) {
+      final Middleware<TestState> loggerMiddleware = (store, dynamic action, next) {
         counter += 1;
 
         if (action == Actions.CallApi) {
@@ -123,7 +123,7 @@ void main() {
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         if (action == Actions.Fetching) {
           return new TestState("FETCHING");
         } else if (action == Actions.FetchComplete) {
@@ -133,7 +133,7 @@ void main() {
         return state;
       };
 
-      final store = new DevToolsStore(reducer,
+      final store = new DevToolsStore<TestState>(reducer,
           initialState: new TestState(),
           middleware: [fetchMiddleware, loggerMiddleware],
           syncStream: true);
@@ -160,7 +160,7 @@ void main() {
       var counter = 0;
       final order = <String>[];
 
-      final Middleware<TestState> middleWare1 = (store, action, next) {
+      final Middleware<TestState> middleWare1 = (store, dynamic action, next) {
         counter += 1;
         order.add("first");
         next(action);
@@ -170,16 +170,16 @@ void main() {
         }
       };
 
-      final Middleware<TestState> middleWare2 = (store, action, next) {
+      final Middleware<TestState> middleWare2 = (store, dynamic action, next) {
         counter += 1;
         order.add("second");
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, action) {
+      final Reducer<TestState> reducer = (state, dynamic action) {
         return state;
       };
-      final store = new DevToolsStore(
+      final store = new DevToolsStore<TestState>(
         reducer,
         initialState: new TestState(),
         middleware: [middleWare1, middleWare2],
