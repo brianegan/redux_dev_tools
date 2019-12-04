@@ -48,7 +48,8 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
         );
 
       case DevToolsActionTypes.Save:
-        return new DevToolsState<S>([state.currentAppState], <dynamic>[action], 0);
+        return new DevToolsState<S>(
+            [state.currentAppState], <dynamic>[action], 0);
 
       case DevToolsActionTypes.JumpToState:
         return new DevToolsState<S>(

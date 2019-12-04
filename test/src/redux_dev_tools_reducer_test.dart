@@ -147,8 +147,7 @@ void main() {
       expect(store.devToolsState.computedStates.length, 1);
       expect(store.devToolsState.stagedActions.length, 1);
       expect(store.devToolsState.currentAppState, new TestState());
-      expect(
-          store.devToolsState.latestAction, new DevToolsAction.reset());
+      expect(store.devToolsState.latestAction, new DevToolsAction.reset());
     });
 
     test("save action should commit the current state of the app", () {

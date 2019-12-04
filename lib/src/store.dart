@@ -46,8 +46,7 @@ class DevToolsStore<S> implements Store<S> {
     List<Middleware<S>> middleware: const [],
     bool syncStream: false,
     bool distinct: false,
-  })
-      : _distinct = distinct {
+  }) : _distinct = distinct {
     final devToolsState = new DevToolsState<S>([initialState], <dynamic>[], 0);
 
     final DevToolsReducer<S> devToolsReducer = new DevToolsReducer<S>(reducer);

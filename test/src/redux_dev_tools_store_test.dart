@@ -69,8 +69,10 @@ void main() {
     });
 
     test("subscribers should be notified when the state changes", () async {
-      final store = new DevToolsStore<TestState>((state, dynamic action) => new TestState(),
-          initialState: new TestState(), syncStream: true);
+      final store = new DevToolsStore<TestState>(
+          (state, dynamic action) => new TestState(),
+          initialState: new TestState(),
+          syncStream: true);
       var subscriber1Called = false;
       var subscriber2Called = false;
 
@@ -140,12 +142,8 @@ void main() {
 
       final action = 'test';
       final states = <String>[];
-      final store = new DevToolsStore<String>(
-        stringReducer,
-        initialState: 'hello',
-        syncStream: true,
-        distinct: true
-      );
+      final store = new DevToolsStore<String>(stringReducer,
+          initialState: 'hello', syncStream: true, distinct: true);
       store.onChange.listen((state) => states.add(state));
 
       // Dispatch two actions. Only one should be emitted b/c distinct is true

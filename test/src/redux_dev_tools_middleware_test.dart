@@ -98,18 +98,21 @@ void main() {
       Future<dynamic> fetchComplete;
       final order = <String>[];
 
-      final Middleware<TestState> fetchMiddleware = (store, dynamic action, next) {
+      final Middleware<TestState> fetchMiddleware =
+          (store, dynamic action, next) {
         counter += 1;
 
         if (action == Actions.CallApi) {
           next(Actions.Fetching);
-          fetchComplete = new Future<dynamic>(() => next(Actions.FetchComplete));
+          fetchComplete =
+              new Future<dynamic>(() => next(Actions.FetchComplete));
         }
 
         next(action);
       };
 
-      final Middleware<TestState> loggerMiddleware = (store, dynamic action, next) {
+      final Middleware<TestState> loggerMiddleware =
+          (store, dynamic action, next) {
         counter += 1;
 
         if (action == Actions.CallApi) {
