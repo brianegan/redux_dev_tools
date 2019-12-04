@@ -67,7 +67,7 @@ class DevToolsStore<S> implements Store<S> {
   Reducer<S> reducer;
 
   @override
-  void dispatch(dynamic action) {
+  dynamic dispatch(dynamic action) {
     if (action is DevToolsAction) {
       _devToolsStore.dispatch(action);
     } else {

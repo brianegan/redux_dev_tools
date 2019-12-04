@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+  *  Bugfix: return dynamic from dispatch
+  
 ## 0.5.0
 
   * Update to support Redux 4.x - 5.0
