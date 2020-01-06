@@ -14,7 +14,7 @@ class DevToolsMiddleware<S> extends MiddlewareClass<DevToolsState<S>> {
   DevToolsMiddleware(this.store, this.appMiddleware);
 
   @override
-  void call(Store<DevToolsState<S>> _, dynamic action, NextDispatcher next) {
+  dynamic call(Store<DevToolsState<S>> _, dynamic action, NextDispatcher next) {
     // Actions are wrapped by the dispatcher as a DevToolsAction. However, the
     // middleware passed into the constructor act on original app actions.
     // Therefore, we must lift the app action out of the DevToolsAction
@@ -30,12 +30,12 @@ class DevToolsMiddleware<S> extends MiddlewareClass<DevToolsState<S>> {
       // actions as DevToolsActions, in the same way as we wrap the initial
       // dispatch call.
       if (action is DevToolsAction) {
-        next(action);
+        return next(action);
       } else {
-        next(new DevToolsAction.perform(action));
+        return next(new DevToolsAction.perform(action));
       }
     };
 
-    appMiddleware(store, actionToDispatch, dispatcher);
+    return appMiddleware(store, actionToDispatch, dispatcher);
   }
 }

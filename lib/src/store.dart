@@ -69,9 +69,9 @@ class DevToolsStore<S> implements Store<S> {
   @override
   dynamic dispatch(dynamic action) {
     if (action is DevToolsAction) {
-      _devToolsStore.dispatch(action);
+      return _devToolsStore.dispatch(action);
     } else {
-      _devToolsStore.dispatch(new DevToolsAction.perform(action));
+      return _devToolsStore.dispatch(new DevToolsAction.perform(action));
     }
   }
 
