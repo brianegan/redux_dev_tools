@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2
+
+  *  Bugfix: actually return value from dispatch. Thanks @dennis-tra
+
 ## 0.5.1
 
   *  Bugfix: return dynamic from dispatch

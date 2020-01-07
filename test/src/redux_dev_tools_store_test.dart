@@ -1,6 +1,6 @@
+import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:test/test.dart';
-import 'package:redux/redux.dart';
 
 class TestState {
   final String message;
@@ -14,6 +14,15 @@ class TestAction {
   TestAction([this.type = "unknown"]);
 }
 
+class MyMiddleware extends MiddlewareClass<TestState> {
+  @override
+  dynamic call(Store<TestState> store, dynamic action, NextDispatcher next) {
+    next(action);
+
+    return action;
+  }
+}
+
 enum Actions { HeyHey, CallApi, Fetching, FetchComplete, Around }
 
 void main() {
@@ -23,17 +32,37 @@ void main() {
         () {
       final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
-          return new TestState("reduced");
+          return TestState("reduced");
         }
 
         return state;
       };
 
-      final store = new DevToolsStore(reducer, initialState: new TestState());
+      final store = DevToolsStore(reducer, initialState: TestState());
 
-      store.dispatch(new TestAction("to invoke"));
+      store.dispatch(TestAction("to invoke"));
 
       expect(store.state.message, "reduced");
+    });
+
+    test('should return from dispatch', () {
+      TestState reducer(TestState state, dynamic action) {
+        if (action is TestAction && action.type == "to invoke") {
+          return TestState("reduced");
+        }
+
+        return state;
+      }
+
+      final store = DevToolsStore<TestState>(
+        reducer,
+        initialState: TestState(),
+        middleware: [MyMiddleware()],
+      );
+
+      var returned = store.dispatch(TestAction()) as TestAction;
+
+      expect(returned, TypeMatcher<TestAction>());
     });
 
     test(
@@ -44,7 +73,7 @@ void main() {
 
       final Reducer<TestState> reducer1 = (state, dynamic action) {
         if (action is TestAction && action.type == helloReducer1) {
-          return new TestState("oh hai");
+          return TestState("oh hai");
         }
 
         return state;
@@ -52,26 +81,26 @@ void main() {
 
       final Reducer<TestState> reducer2 = (state, dynamic action) {
         if (action is TestAction && action.type == helloReducer2) {
-          return new TestState("mark");
+          return TestState("mark");
         }
 
         return state;
       };
 
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
           combineReducers([reducer1, reducer2]),
-          initialState: new TestState());
+          initialState: TestState());
 
-      store.dispatch(new TestAction(helloReducer1));
+      store.dispatch(TestAction(helloReducer1));
       expect(store.state.message, "oh hai");
-      store.dispatch(new TestAction(helloReducer2));
+      store.dispatch(TestAction(helloReducer2));
       expect(store.state.message, "mark");
     });
 
     test("subscribers should be notified when the state changes", () async {
-      final store = new DevToolsStore<TestState>(
-          (state, dynamic action) => new TestState(),
-          initialState: new TestState(),
+      final store = DevToolsStore<TestState>(
+          (state, dynamic action) => TestState(),
+          initialState: TestState(),
           syncStream: true);
       var subscriber1Called = false;
       var subscriber2Called = false;
@@ -83,16 +112,16 @@ void main() {
         subscriber2Called = true;
       });
 
-      store.dispatch(new TestAction());
+      store.dispatch(TestAction());
 
       expect(subscriber1Called, isTrue);
       expect(subscriber2Called, isTrue);
     });
 
     test("the store should not notify unsubscribed objects", () {
-      final store = new DevToolsStore<TestState>(
-        (state, dynamic action) => new TestState(),
-        initialState: new TestState(),
+      final store = DevToolsStore<TestState>(
+        (state, dynamic action) => TestState(),
+        initialState: TestState(),
         syncStream: true,
       );
       var subscriber1Called = false;
@@ -108,7 +137,7 @@ void main() {
 
       subscription.cancel();
 
-      store.dispatch(new TestAction());
+      store.dispatch(TestAction());
 
       expect(subscriber1Called, isFalse);
       expect(subscriber2Called, isTrue);
@@ -117,21 +146,21 @@ void main() {
     test("store should pass the current state to subscribers", () {
       final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
-          return new TestState("oh hai");
+          return TestState("oh hai");
         }
 
         return state;
       };
 
-      var actual = new TestState();
-      final store = new DevToolsStore(
+      var actual = TestState();
+      final store = DevToolsStore(
         reducer,
-        initialState: new TestState(),
+        initialState: TestState(),
         syncStream: true,
       );
 
       store.onChange.listen((it) => actual = it);
-      store.dispatch(new TestAction("to invoke"));
+      store.dispatch(TestAction("to invoke"));
 
       expect(actual, store.state);
     });
@@ -142,7 +171,7 @@ void main() {
 
       final action = 'test';
       final states = <String>[];
-      final store = new DevToolsStore<String>(stringReducer,
+      final store = DevToolsStore<String>(stringReducer,
           initialState: 'hello', syncStream: true, distinct: true);
       store.onChange.listen((state) => states.add(state));
 
@@ -158,22 +187,22 @@ void main() {
         () {
       final Reducer<TestState> reducer = (state, dynamic action) {
         if (action is TestAction && action.type == "to invoke") {
-          return new TestState("oh hai");
+          return TestState("oh hai");
         }
 
         return state;
       };
 
-      final store = new DevToolsStore(
+      final store = DevToolsStore(
         reducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
 
-      store.dispatch(new TestAction("to invoke"));
+      store.dispatch(TestAction("to invoke"));
       expect(store.state.message, "oh hai");
 
-      store.dispatch(new DevToolsAction.reset());
-      expect(store.state.message, new TestState().message);
+      store.dispatch(DevToolsAction.reset());
+      expect(store.state.message, TestState().message);
     });
   });
 }
