@@ -63,7 +63,7 @@ class TestReducer extends ReducerClass<TestState> {
 
 void main() {
   group('DevTools Reducers', () {
-    TestReducer testReducer;
+    late TestReducer testReducer;
 
     setUp(() {
       testReducer = new TestReducer();
