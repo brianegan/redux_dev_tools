@@ -60,7 +60,7 @@ void main() {
         middleware: [MyMiddleware()],
       );
 
-      var returned = store.dispatch(TestAction()) as TestAction;
+      var returned = store.dispatch(TestAction()) as TestAction?;
 
       expect(returned, TypeMatcher<TestAction>());
     });

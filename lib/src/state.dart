@@ -13,7 +13,7 @@ class DevToolsState<S> {
 
   /// Determines which of the [computedStates] is the current state. This allows
   /// you to skip back and forth in time.
-  final int currentPosition;
+  final int? currentPosition;
 
   /// Create the DevToolsState in the simplest possible way
   DevToolsState(
@@ -53,10 +53,10 @@ class DevToolsState<S> {
 
   /// This is the current state of the application itself. The [DevToolsState]
   /// is simply a wrapper around your application's normal state.
-  S get currentAppState => computedStates[currentPosition];
+  S get currentAppState => computedStates[currentPosition!];
 
   /// The latest action that has been dispatched through the `Store`.
-  dynamic get latestAction => stagedActions[currentPosition];
+  dynamic get latestAction => stagedActions[currentPosition!];
 
   @override
   bool operator ==(Object other) =>

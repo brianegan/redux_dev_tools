@@ -38,11 +38,11 @@ import 'package:redux_dev_tools/src/state.dart';
 ///     final store = new DevToolsStore(addReducer);
 class DevToolsStore<S> implements Store<S> {
   final bool _distinct;
-  Store<DevToolsState<S>> _devToolsStore;
+  Store<DevToolsState<S>>? _devToolsStore;
 
   DevToolsStore(
     Reducer<S> reducer, {
-    S initialState,
+    required S initialState,
     List<Middleware<S>> middleware: const [],
     bool syncStream: false,
     bool distinct: false,
@@ -62,33 +62,33 @@ class DevToolsStore<S> implements Store<S> {
     dispatch(new DevToolsAction.init());
   }
 
-  DevToolsState<S> get devToolsState => _devToolsStore.state;
+  DevToolsState<S> get devToolsState => _devToolsStore!.state;
   @override
-  Reducer<S> reducer;
+  late Reducer<S> reducer;
 
   @override
   dynamic dispatch(dynamic action) {
     if (action is DevToolsAction) {
-      return _devToolsStore.dispatch(action);
+      return _devToolsStore!.dispatch(action);
     } else {
-      return _devToolsStore.dispatch(new DevToolsAction.perform(action));
+      return _devToolsStore!.dispatch(new DevToolsAction.perform(action));
     }
   }
 
   @override
   Stream<S> get onChange {
-    final stream = _devToolsStore.onChange
+    final stream = _devToolsStore!.onChange
         .map((devToolsState) => devToolsState.currentAppState);
 
     return _distinct ? stream.distinct() : stream;
   }
 
   @override
-  S get state => _devToolsStore.state.currentAppState;
+  S get state => _devToolsStore!.state.currentAppState;
 
   @override
   Future teardown() async {
-    await _devToolsStore.teardown();
+    await _devToolsStore!.teardown();
     _devToolsStore = null;
   }
 }

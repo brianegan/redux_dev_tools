@@ -11,7 +11,7 @@
 class DevToolsAction {
   final DevToolsActionTypes type;
   final dynamic appAction;
-  final int position;
+  final int? position;
 
   DevToolsAction._(this.type, this.appAction, this.position);
 

@@ -95,7 +95,7 @@ void main() {
         "async middleware should be able to dispatch follow-up unwrapped actions that travel through the remaining middleware",
         () async {
       int counter = 0;
-      Future<dynamic> fetchComplete;
+      Future<dynamic>? fetchComplete;
       final order = <String>[];
 
       final Middleware<TestState> fetchMiddleware =

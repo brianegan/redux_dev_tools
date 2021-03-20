@@ -33,10 +33,10 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
           devToolsAction,
           addToEnd
               ? state.computedStates
-              : state.computedStates.sublist(0, state.currentPosition + 1),
+              : state.computedStates.sublist(0, state.currentPosition! + 1),
           addToEnd
               ? state.stagedActions
-              : state.stagedActions.sublist(0, state.currentPosition + 1),
+              : state.stagedActions.sublist(0, state.currentPosition! + 1),
           appReducer,
         );
 
@@ -71,13 +71,13 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
   }
 
   List<S> recomputeStates(List<S> computedStates, List<dynamic> stagedActions) {
-    final recomputedStates = new List<S>(computedStates.length);
+    final recomputedStates = <S>[];
     S currentState = computedStates[0];
 
     for (int i = 0; i < computedStates.length; i++) {
       final dynamic currentAction = stagedActions[i];
       currentState = appReducer(currentState, currentAction);
-      recomputedStates[i] = currentState;
+      recomputedStates.add(currentState);
     }
 
     return recomputedStates;
