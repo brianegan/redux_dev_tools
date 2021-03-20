@@ -32,7 +32,7 @@ class DevToolsMiddleware<S> extends MiddlewareClass<DevToolsState<S>> {
       if (action is DevToolsAction) {
         return next(action);
       } else {
-        return next(new DevToolsAction.perform(action));
+        return next(DevToolsAction.perform(action));
       }
     };
 

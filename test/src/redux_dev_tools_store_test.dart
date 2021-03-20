@@ -5,13 +5,13 @@ import 'package:test/test.dart';
 class TestState {
   final String message;
 
-  TestState([this.message = "initial state"]);
+  TestState([this.message = 'initial state']);
 }
 
 class TestAction {
   final String type;
 
-  TestAction([this.type = "unknown"]);
+  TestAction([this.type = 'unknown']);
 }
 
 class MyMiddleware extends MiddlewareClass<TestState> {
@@ -28,11 +28,11 @@ enum Actions { HeyHey, CallApi, Fetching, FetchComplete, Around }
 void main() {
   group('DevTools Store', () {
     test(
-        "when an action is fired, the corresponding reducer should be called and update the state of the application",
+        'when an action is fired, the corresponding reducer should be called and update the state of the application',
         () {
-      final Reducer<TestState> reducer = (state, dynamic action) {
-        if (action is TestAction && action.type == "to invoke") {
-          return TestState("reduced");
+      final reducer = (TestState state, dynamic action) {
+        if (action is TestAction && action.type == 'to invoke') {
+          return TestState('reduced');
         }
 
         return state;
@@ -40,15 +40,15 @@ void main() {
 
       final store = DevToolsStore(reducer, initialState: TestState());
 
-      store.dispatch(TestAction("to invoke"));
+      store.dispatch(TestAction('to invoke'));
 
-      expect(store.state.message, "reduced");
+      expect(store.state.message, 'reduced');
     });
 
     test('should return from dispatch', () {
       TestState reducer(TestState state, dynamic action) {
-        if (action is TestAction && action.type == "to invoke") {
-          return TestState("reduced");
+        if (action is TestAction && action.type == 'to invoke') {
+          return TestState('reduced');
         }
 
         return state;
@@ -66,22 +66,22 @@ void main() {
     });
 
     test(
-        "when two reducers are combined, and a series of actions are fired, the correct reducer should be called",
+        'when two reducers are combined, and a series of actions are fired, the correct reducer should be called',
         () {
-      final helloReducer1 = "helloReducer1";
-      final helloReducer2 = "helloReducer2";
+      final helloReducer1 = 'helloReducer1';
+      final helloReducer2 = 'helloReducer2';
 
-      final Reducer<TestState> reducer1 = (state, dynamic action) {
+      final reducer1 = (TestState state, dynamic action) {
         if (action is TestAction && action.type == helloReducer1) {
-          return TestState("oh hai");
+          return TestState('oh hai');
         }
 
         return state;
       };
 
-      final Reducer<TestState> reducer2 = (state, dynamic action) {
+      final reducer2 = (TestState state, dynamic action) {
         if (action is TestAction && action.type == helloReducer2) {
-          return TestState("mark");
+          return TestState('mark');
         }
 
         return state;
@@ -92,12 +92,12 @@ void main() {
           initialState: TestState());
 
       store.dispatch(TestAction(helloReducer1));
-      expect(store.state.message, "oh hai");
+      expect(store.state.message, 'oh hai');
       store.dispatch(TestAction(helloReducer2));
-      expect(store.state.message, "mark");
+      expect(store.state.message, 'mark');
     });
 
-    test("subscribers should be notified when the state changes", () async {
+    test('subscribers should be notified when the state changes', () async {
       final store = DevToolsStore<TestState>(
           (state, dynamic action) => TestState(),
           initialState: TestState(),
@@ -118,7 +118,7 @@ void main() {
       expect(subscriber2Called, isTrue);
     });
 
-    test("the store should not notify unsubscribed objects", () {
+    test('the store should not notify unsubscribed objects', () {
       final store = DevToolsStore<TestState>(
         (state, dynamic action) => TestState(),
         initialState: TestState(),
@@ -143,10 +143,10 @@ void main() {
       expect(subscriber2Called, isTrue);
     });
 
-    test("store should pass the current state to subscribers", () {
-      final Reducer<TestState> reducer = (state, dynamic action) {
-        if (action is TestAction && action.type == "to invoke") {
-          return TestState("oh hai");
+    test('store should pass the current state to subscribers', () {
+      final reducer = (TestState state, dynamic action) {
+        if (action is TestAction && action.type == 'to invoke') {
+          return TestState('oh hai');
         }
 
         return state;
@@ -160,14 +160,14 @@ void main() {
       );
 
       store.onChange.listen((it) => actual = it);
-      store.dispatch(TestAction("to invoke"));
+      store.dispatch(TestAction('to invoke'));
 
       expect(actual, store.state);
     });
 
     test('store does not emit an onChange if distinct', () {
       String stringReducer(String state, dynamic action) =>
-          action is String ? action : "notFound";
+          action is String ? action : 'notFound';
 
       final action = 'test';
       final states = <String>[];
@@ -183,11 +183,11 @@ void main() {
     });
 
     test(
-        "store should work with both dev tools actions and application actions",
+        'store should work with both dev tools actions and application actions',
         () {
-      final Reducer<TestState> reducer = (state, dynamic action) {
-        if (action is TestAction && action.type == "to invoke") {
-          return TestState("oh hai");
+      final reducer = (TestState state, dynamic action) {
+        if (action is TestAction && action.type == 'to invoke') {
+          return TestState('oh hai');
         }
 
         return state;
@@ -198,8 +198,8 @@ void main() {
         initialState: TestState(),
       );
 
-      store.dispatch(TestAction("to invoke"));
-      expect(store.state.message, "oh hai");
+      store.dispatch(TestAction('to invoke'));
+      expect(store.state.message, 'oh hai');
 
       store.dispatch(DevToolsAction.reset());
       expect(store.state.message, TestState().message);

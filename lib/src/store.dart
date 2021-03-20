@@ -28,14 +28,14 @@ import 'package:redux_dev_tools/src/state.dart';
 ///     int addOneReducer(int state, action) => state + 1;
 ///
 ///     // For production mode, this is how you should create your store.
-///     final store = new Store(addReducer);
+///     final store = Store(addReducer);
 ///
 ///     // In Dev Mode, if you want to hook up to Time-Traveling Dev Tools,
 ///     // create a `DevToolsStore` instead!
 ///     //
 ///     // It will act exactly like your normal Store, but give you super powers
 ///     // to travel back and forth in time throughout your app States!
-///     final store = new DevToolsStore(addReducer);
+///     final store = DevToolsStore(addReducer);
 class DevToolsStore<S> implements Store<S> {
   final bool _distinct;
   Store<DevToolsState<S>>? _devToolsStore;
@@ -43,23 +43,23 @@ class DevToolsStore<S> implements Store<S> {
   DevToolsStore(
     Reducer<S> reducer, {
     required S initialState,
-    List<Middleware<S>> middleware: const [],
-    bool syncStream: false,
-    bool distinct: false,
+    List<Middleware<S>> middleware = const [],
+    bool syncStream = false,
+    bool distinct = false,
   }) : _distinct = distinct {
-    final devToolsState = new DevToolsState<S>([initialState], <dynamic>[], 0);
+    final devToolsState = DevToolsState<S>([initialState], <dynamic>[], 0);
 
-    final DevToolsReducer<S> devToolsReducer = new DevToolsReducer<S>(reducer);
+    final devToolsReducer = DevToolsReducer<S>(reducer);
 
-    _devToolsStore = new Store<DevToolsState<S>>(devToolsReducer,
+    _devToolsStore = Store<DevToolsState<S>>(devToolsReducer,
         initialState: devToolsState,
-        middleware: new List<Middleware<DevToolsState<S>>>.generate(
+        middleware: List<Middleware<DevToolsState<S>>>.generate(
           middleware.length,
-          (index) => new DevToolsMiddleware<S>(this, middleware[index]),
+          (index) => DevToolsMiddleware<S>(this, middleware[index]),
         ),
         syncStream: syncStream);
 
-    dispatch(new DevToolsAction.init());
+    dispatch(DevToolsAction.init());
   }
 
   DevToolsState<S> get devToolsState => _devToolsStore!.state;
@@ -71,7 +71,7 @@ class DevToolsStore<S> implements Store<S> {
     if (action is DevToolsAction) {
       return _devToolsStore!.dispatch(action);
     } else {
-      return _devToolsStore!.dispatch(new DevToolsAction.perform(action));
+      return _devToolsStore!.dispatch(DevToolsAction.perform(action));
     }
   }
 

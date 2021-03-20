@@ -6,7 +6,7 @@ import 'package:redux/redux.dart';
 class TestState {
   final String message;
 
-  TestState([this.message = "initial state"]);
+  TestState([this.message = 'initial state']);
 
   @override
   bool operator ==(Object other) =>
@@ -25,8 +25,8 @@ void main() {
   group('DevTools Middleware', () {
     test("unwrapped actions should be run through a store's middleware", () {
       var counter = 0;
-      final Reducer<TestState> reducer = (state, dynamic action) {
-        return new TestState("Reduced?");
+      final reducer = (TestState state, dynamic action) {
+        return TestState('Reduced?');
       };
       final Middleware<TestState> middleware = (
         Store<TestState> store,
@@ -36,9 +36,9 @@ void main() {
         counter += 1;
         next(action);
       };
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
         reducer,
-        initialState: new TestState(),
+        initialState: TestState(),
         middleware: [middleware],
         syncStream: true,
       );
@@ -46,38 +46,38 @@ void main() {
       store.dispatch(Actions.HeyHey);
 
       expect(counter, 2);
-      expect(store.state.message, "Reduced?");
+      expect(store.state.message, 'Reduced?');
     });
 
     test(
-        "unwrapped actions should pass through the middleware chain in the correct order",
+        'unwrapped actions should pass through the middleware chain in the correct order',
         () {
       var counter = 0;
       final order = <String>[];
 
       final Middleware<TestState> middleWare1 = (state, dynamic action, next) {
         counter += 1;
-        order.add("first");
+        order.add('first');
         next(action);
-        order.add("third");
+        order.add('third');
       };
 
       final Middleware<TestState> middleWare2 = (store, dynamic action, next) {
         counter += 1;
-        order.add("second");
+        order.add('second');
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, dynamic action) {
+      final reducer = (TestState state, dynamic action) {
         if (action == Actions.HeyHey) {
-          return new TestState("howdy!");
+          return TestState('howdy!');
         }
 
         return state;
       };
 
-      final store = new DevToolsStore<TestState>(reducer,
-          initialState: new TestState(),
+      final store = DevToolsStore<TestState>(reducer,
+          initialState: TestState(),
           middleware: [
             middleWare1,
             middleWare2,
@@ -86,15 +86,15 @@ void main() {
 
       store.dispatch(Actions.HeyHey);
 
-      expect(store.state, new TestState("howdy!"));
+      expect(store.state, TestState('howdy!'));
       expect(counter, 4);
-      expect(order, ["first", "second", "third", "first", "second", "third"]);
+      expect(order, ['first', 'second', 'third', 'first', 'second', 'third']);
     });
 
     test(
-        "async middleware should be able to dispatch follow-up unwrapped actions that travel through the remaining middleware",
+        'async middleware should be able to dispatch follow-up unwrapped actions that travel through the remaining middleware',
         () async {
-      int counter = 0;
+      var counter = 0;
       Future<dynamic>? fetchComplete;
       final order = <String>[];
 
@@ -104,8 +104,7 @@ void main() {
 
         if (action == Actions.CallApi) {
           next(Actions.Fetching);
-          fetchComplete =
-              new Future<dynamic>(() => next(Actions.FetchComplete));
+          fetchComplete = Future<dynamic>(() => next(Actions.FetchComplete));
         }
 
         next(action);
@@ -116,56 +115,56 @@ void main() {
         counter += 1;
 
         if (action == Actions.CallApi) {
-          order.add("CALL_API");
+          order.add('CALL_API');
         } else if (action == Actions.Fetching) {
-          order.add("FETCHING");
+          order.add('FETCHING');
         } else if (action == Actions.FetchComplete) {
-          order.add("FETCH_COMPLETE");
+          order.add('FETCH_COMPLETE');
         }
 
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, dynamic action) {
+      final reducer = (TestState state, dynamic action) {
         if (action == Actions.Fetching) {
-          return new TestState("FETCHING");
+          return TestState('FETCHING');
         } else if (action == Actions.FetchComplete) {
-          return new TestState("FETCH_COMPLETE");
+          return TestState('FETCH_COMPLETE');
         }
 
         return state;
       };
 
-      final store = new DevToolsStore<TestState>(reducer,
-          initialState: new TestState(),
+      final store = DevToolsStore<TestState>(reducer,
+          initialState: TestState(),
           middleware: [fetchMiddleware, loggerMiddleware],
           syncStream: true);
 
       store.dispatch(Actions.CallApi);
 
       expect(counter, 5);
-      expect(order, ["FETCHING", "CALL_API"]);
-      expect(store.state, new TestState("FETCHING"));
+      expect(order, ['FETCHING', 'CALL_API']);
+      expect(store.state, TestState('FETCHING'));
 
       await fetchComplete;
 
       expect(counter, 6);
       expect(
         order,
-        ["FETCHING", "CALL_API", "FETCH_COMPLETE"],
+        ['FETCHING', 'CALL_API', 'FETCH_COMPLETE'],
       );
-      expect(store.state, new TestState("FETCH_COMPLETE"));
+      expect(store.state, TestState('FETCH_COMPLETE'));
     });
 
     test(
-        "sync actions should be able to send new unwrapped actions through the entire chain",
+        'sync actions should be able to send new unwrapped actions through the entire chain',
         () async {
       var counter = 0;
       final order = <String>[];
 
       final Middleware<TestState> middleWare1 = (store, dynamic action, next) {
         counter += 1;
-        order.add("first");
+        order.add('first');
         next(action);
 
         if (action == Actions.Around) {
@@ -175,16 +174,16 @@ void main() {
 
       final Middleware<TestState> middleWare2 = (store, dynamic action, next) {
         counter += 1;
-        order.add("second");
+        order.add('second');
         next(action);
       };
 
-      final Reducer<TestState> reducer = (state, dynamic action) {
+      final reducer = (TestState state, dynamic action) {
         return state;
       };
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
         reducer,
-        initialState: new TestState(),
+        initialState: TestState(),
         middleware: [middleWare1, middleWare2],
       );
 
@@ -193,14 +192,14 @@ void main() {
       expect(counter, 6);
       expect(order, [
         // From DevToolsInit
-        "first",
-        "second",
+        'first',
+        'second',
         // From Around
-        "first",
-        "second",
+        'first',
+        'second',
         // From Hey Hey
-        "first",
-        "second",
+        'first',
+        'second',
       ]);
     });
   });

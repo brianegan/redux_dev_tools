@@ -16,19 +16,19 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
     assert(action is DevToolsAction,
         'When using the Dev Tools, all actions must be wrapped as a DevToolsAction');
 
-    final DevToolsAction devToolsAction = action as DevToolsAction;
+    final devToolsAction = action as DevToolsAction;
 
     switch (devToolsAction.type) {
       case DevToolsActionTypes.Init:
-        final S initialState = appReducer(state.currentAppState, action);
+        final initialState = appReducer(state.currentAppState, action);
 
-        return new DevToolsState<S>([initialState], <dynamic>[action], 0);
+        return DevToolsState<S>([initialState], <dynamic>[action], 0);
 
       case DevToolsActionTypes.PerformAction:
         final addToEnd =
             state.currentPosition == state.computedStates.length - 1;
 
-        return new DevToolsState.fromApp(
+        return DevToolsState.fromApp(
           state,
           devToolsAction,
           addToEnd
@@ -41,25 +41,24 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
         );
 
       case DevToolsActionTypes.Reset:
-        return new DevToolsState<S>(
+        return DevToolsState<S>(
           [state.savedState],
           <dynamic>[devToolsAction],
           0,
         );
 
       case DevToolsActionTypes.Save:
-        return new DevToolsState<S>(
-            [state.currentAppState], <dynamic>[action], 0);
+        return DevToolsState<S>([state.currentAppState], <dynamic>[action], 0);
 
       case DevToolsActionTypes.JumpToState:
-        return new DevToolsState<S>(
+        return DevToolsState<S>(
           state.computedStates,
           state.stagedActions,
           devToolsAction.position,
         );
 
       case DevToolsActionTypes.Recompute:
-        return new DevToolsState<S>(
+        return DevToolsState<S>(
           recomputeStates(state.computedStates, state.stagedActions),
           state.stagedActions,
           state.currentPosition,
@@ -72,9 +71,9 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
 
   List<S> recomputeStates(List<S> computedStates, List<dynamic> stagedActions) {
     final recomputedStates = <S>[];
-    S currentState = computedStates[0];
+    var currentState = computedStates[0];
 
-    for (int i = 0; i < computedStates.length; i++) {
+    for (var i = 0; i < computedStates.length; i++) {
       final dynamic currentAction = stagedActions[i];
       currentState = appReducer(currentState, currentAction);
       recomputedStates.add(currentState);

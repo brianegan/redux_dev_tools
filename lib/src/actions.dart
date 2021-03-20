@@ -16,22 +16,22 @@ class DevToolsAction {
   DevToolsAction._(this.type, this.appAction, this.position);
 
   factory DevToolsAction.perform(dynamic appAction) =>
-      new DevToolsAction._(DevToolsActionTypes.PerformAction, appAction, null);
+      DevToolsAction._(DevToolsActionTypes.PerformAction, appAction, null);
 
   factory DevToolsAction.jumpToState(int index) =>
-      new DevToolsAction._(DevToolsActionTypes.JumpToState, null, index);
+      DevToolsAction._(DevToolsActionTypes.JumpToState, null, index);
 
   factory DevToolsAction.save() =>
-      new DevToolsAction._(DevToolsActionTypes.Save, null, null);
+      DevToolsAction._(DevToolsActionTypes.Save, null, null);
 
   factory DevToolsAction.reset() =>
-      new DevToolsAction._(DevToolsActionTypes.Reset, null, null);
+      DevToolsAction._(DevToolsActionTypes.Reset, null, null);
 
   factory DevToolsAction.recompute() =>
-      new DevToolsAction._(DevToolsActionTypes.Recompute, null, null);
+      DevToolsAction._(DevToolsActionTypes.Recompute, null, null);
 
   factory DevToolsAction.init() =>
-      new DevToolsAction._(DevToolsActionTypes.Init, null, null);
+      DevToolsAction._(DevToolsActionTypes.Init, null, null);
 
   @override
   bool operator ==(Object other) =>

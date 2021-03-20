@@ -11,3 +11,4 @@ doc/api/
 coverage
 lcov.info
 .idea
+.dart_tool/

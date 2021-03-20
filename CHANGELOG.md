@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+  * Null Safety Support
+  * Add pedantic support & fix code style
+
 ## 0.5.2
 
   *  Bugfix: actually return value from dispatch. Thanks @dennis-tra

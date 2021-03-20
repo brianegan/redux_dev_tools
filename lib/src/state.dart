@@ -31,8 +31,8 @@ class DevToolsState<S> {
     List<dynamic> stagedActions,
     Reducer<S> appReducer,
   ) {
-    final newStates = <S>[]..addAll(computedStates);
-    final newActions = <dynamic>[]..addAll(stagedActions);
+    final newStates = <S>[...computedStates];
+    final newActions = <dynamic>[...stagedActions];
 
     newStates.add(
       appReducer(
@@ -43,7 +43,7 @@ class DevToolsState<S> {
 
     newActions.add(devToolsAction.appAction);
 
-    return new DevToolsState<S>(newStates, newActions, newStates.length - 1);
+    return DevToolsState<S>(newStates, newActions, newStates.length - 1);
   }
 
   /// The last saved state, or the initial state if a Save action has not been
@@ -74,12 +74,13 @@ class DevToolsState<S> {
       currentPosition.hashCode;
 
   @override
-  String toString() =>
-      'DevToolsState{\n' +
-      '  computedStates: $computedStates,\n' +
-      '  stagedActions: $stagedActions,\n' +
-      '  currentPosition: $currentPosition,\n' +
-      '  currentAppState: $currentAppState,\n' +
-      '  savedState: $savedState\n' +
-      '}';
+  String toString() {
+    return 'DevToolsState{\n'
+        '  computedStates: $computedStates,\n'
+        '  stagedActions: $stagedActions,\n'
+        '  currentPosition: $currentPosition,\n'
+        '  currentAppState: $currentAppState,\n'
+        '  savedState: $savedState\n'
+        '}';
+  }
 }

@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 class TestState {
   final String message;
 
-  TestState([this.message = "initial state"]);
+  TestState([this.message = 'initial state']);
 
   @override
   bool operator ==(Object other) =>
@@ -26,7 +26,7 @@ class TestState {
 class TestAction {
   final String message;
 
-  TestAction([this.message = "unknown"]);
+  TestAction([this.message = 'unknown']);
 
   @override
   bool operator ==(Object other) =>
@@ -51,10 +51,10 @@ class TestReducer extends ReducerClass<TestState> {
   TestState call(TestState state, dynamic action) {
     if (action is TestAction) {
       if (updated) {
-        return new TestState("updated ${action.message}");
+        return TestState('updated ${action.message}');
       }
 
-      return new TestState(action.message);
+      return TestState(action.message);
     }
 
     return state;
@@ -66,160 +66,160 @@ void main() {
     late TestReducer testReducer;
 
     setUp(() {
-      testReducer = new TestReducer();
+      testReducer = TestReducer();
     });
 
-    test("perform action should update the dev tools store", () {
-      final store = new DevToolsStore<TestState>(
+    test('perform action should update the dev tools store', () {
+      final store = DevToolsStore<TestState>(
         testReducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
-      final message = "test";
+      final message = 'test';
 
-      store.dispatch(new TestAction(message));
+      store.dispatch(TestAction(message));
 
-      expect(store.devToolsState.savedState, new TestState());
+      expect(store.devToolsState.savedState, TestState());
       expect(store.devToolsState.computedStates.length, 2);
       expect(store.devToolsState.stagedActions.length, 2);
       expect(
         store.devToolsState.currentAppState,
-        new TestState(message),
+        TestState(message),
       );
-      expect(store.devToolsState.latestAction, new TestAction(message));
+      expect(store.devToolsState.latestAction, TestAction(message));
     });
 
     test(
-        "when back in time, the perform action should overwrite all future actions",
+        'when back in time, the perform action should overwrite all future actions',
         () {
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
         testReducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
-      final first = "first";
-      final second = "second";
-      final third = "third";
+      final first = 'first';
+      final second = 'second';
+      final third = 'third';
 
-      store.dispatch(new TestAction(first));
-      store.dispatch(new TestAction(second));
-      store.dispatch(new TestAction(third));
+      store.dispatch(TestAction(first));
+      store.dispatch(TestAction(second));
+      store.dispatch(TestAction(third));
 
-      expect(store.devToolsState.savedState, new TestState());
+      expect(store.devToolsState.savedState, TestState());
       expect(store.devToolsState.computedStates.length, 4);
       expect(store.devToolsState.stagedActions.length, 4);
-      expect(store.devToolsState.computedStates[1], new TestState(first));
-      expect(store.devToolsState.stagedActions[1], new TestAction(first));
-      expect(store.devToolsState.computedStates[2], new TestState(second));
-      expect(store.devToolsState.stagedActions[2], new TestAction(second));
-      expect(store.devToolsState.computedStates[3], new TestState(third));
-      expect(store.devToolsState.stagedActions[3], new TestAction(third));
-      expect(store.devToolsState.currentAppState, new TestState(third));
-      expect(store.devToolsState.latestAction, new TestAction(third));
+      expect(store.devToolsState.computedStates[1], TestState(first));
+      expect(store.devToolsState.stagedActions[1], TestAction(first));
+      expect(store.devToolsState.computedStates[2], TestState(second));
+      expect(store.devToolsState.stagedActions[2], TestAction(second));
+      expect(store.devToolsState.computedStates[3], TestState(third));
+      expect(store.devToolsState.stagedActions[3], TestAction(third));
+      expect(store.devToolsState.currentAppState, TestState(third));
+      expect(store.devToolsState.latestAction, TestAction(third));
 
-      store.dispatch(new DevToolsAction.jumpToState(2));
-      store.dispatch(new TestAction(first));
+      store.dispatch(DevToolsAction.jumpToState(2));
+      store.dispatch(TestAction(first));
 
-      expect(store.devToolsState.savedState, new TestState());
+      expect(store.devToolsState.savedState, TestState());
       expect(store.devToolsState.computedStates.length, 4);
       expect(store.devToolsState.stagedActions.length, 4);
-      expect(store.devToolsState.computedStates[1], new TestState(first));
-      expect(store.devToolsState.stagedActions[1], new TestAction(first));
-      expect(store.devToolsState.computedStates[2], new TestState(second));
-      expect(store.devToolsState.stagedActions[2], new TestAction(second));
-      expect(store.devToolsState.computedStates[3], new TestState(first));
-      expect(store.devToolsState.stagedActions[3], new TestAction(first));
-      expect(store.devToolsState.currentAppState, new TestState(first));
-      expect(store.devToolsState.latestAction, new TestAction(first));
+      expect(store.devToolsState.computedStates[1], TestState(first));
+      expect(store.devToolsState.stagedActions[1], TestAction(first));
+      expect(store.devToolsState.computedStates[2], TestState(second));
+      expect(store.devToolsState.stagedActions[2], TestAction(second));
+      expect(store.devToolsState.computedStates[3], TestState(first));
+      expect(store.devToolsState.stagedActions[3], TestAction(first));
+      expect(store.devToolsState.currentAppState, TestState(first));
+      expect(store.devToolsState.latestAction, TestAction(first));
     });
 
     test(
-        "reset action should roll the current state of the app back to the previously saved state",
+        'reset action should roll the current state of the app back to the previously saved state',
         () {
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
         testReducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
 
-      store.dispatch(
-          new TestAction("action that will be lost when store is reset"));
-      store.dispatch(new DevToolsAction.reset());
+      store
+          .dispatch(TestAction('action that will be lost when store is reset'));
+      store.dispatch(DevToolsAction.reset());
 
-      expect(store.devToolsState.savedState, new TestState());
+      expect(store.devToolsState.savedState, TestState());
       expect(store.devToolsState.computedStates.length, 1);
       expect(store.devToolsState.stagedActions.length, 1);
-      expect(store.devToolsState.currentAppState, new TestState());
-      expect(store.devToolsState.latestAction, new DevToolsAction.reset());
+      expect(store.devToolsState.currentAppState, TestState());
+      expect(store.devToolsState.latestAction, DevToolsAction.reset());
     });
 
-    test("save action should commit the current state of the app", () {
-      final store = new DevToolsStore<TestState>(
+    test('save action should commit the current state of the app', () {
+      final store = DevToolsStore<TestState>(
         testReducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
-      final message = "action to save";
+      final message = 'action to save';
 
-      store.dispatch(new TestAction(message));
-      store.dispatch(new DevToolsAction.save());
+      store.dispatch(TestAction(message));
+      store.dispatch(DevToolsAction.save());
 
-      expect(store.devToolsState.savedState, new TestState(message));
+      expect(store.devToolsState.savedState, TestState(message));
       expect(store.devToolsState.computedStates.length, 1);
       expect(store.devToolsState.stagedActions.length, 1);
-      expect(store.devToolsState.currentAppState, new TestState(message));
+      expect(store.devToolsState.currentAppState, TestState(message));
       expect(
         store.devToolsState.latestAction,
-        new DevToolsAction.save(),
+        DevToolsAction.save(),
       );
     });
 
     test(
-        "jump to state action should set the current state of the app to a given time in the past",
+        'jump to state action should set the current state of the app to a given time in the past',
         () {
-      final store = new DevToolsStore<TestState>(testReducer,
-          initialState: new TestState());
-      final jumpToMessage = "action to jump to";
-      final finalMessage = "final action";
+      final store =
+          DevToolsStore<TestState>(testReducer, initialState: TestState());
+      final jumpToMessage = 'action to jump to';
+      final finalMessage = 'final action';
 
-      store.dispatch(new TestAction(jumpToMessage));
-      store.dispatch(new TestAction(finalMessage));
-      store.dispatch(new DevToolsAction.jumpToState(1));
+      store.dispatch(TestAction(jumpToMessage));
+      store.dispatch(TestAction(finalMessage));
+      store.dispatch(DevToolsAction.jumpToState(1));
 
       expect(store.devToolsState.computedStates.length, 3);
       expect(store.devToolsState.stagedActions.length, 3);
-      expect(store.devToolsState.currentAppState, new TestState(jumpToMessage));
-      expect(store.devToolsState.latestAction, new TestAction(jumpToMessage));
+      expect(store.devToolsState.currentAppState, TestState(jumpToMessage));
+      expect(store.devToolsState.latestAction, TestAction(jumpToMessage));
     });
 
     test(
-        "recompute action should run all actions through the app reducer again",
+        'recompute action should run all actions through the app reducer again',
         () {
-      final store = new DevToolsStore<TestState>(
+      final store = DevToolsStore<TestState>(
         testReducer,
-        initialState: new TestState(),
+        initialState: TestState(),
       );
-      final first = "first";
-      final second = "second";
+      final first = 'first';
+      final second = 'second';
 
-      store.dispatch(new TestAction(first));
-      store.dispatch(new TestAction(second));
+      store.dispatch(TestAction(first));
+      store.dispatch(TestAction(second));
 
       expect(store.devToolsState.computedStates.length, 3);
       expect(store.devToolsState.stagedActions.length, 3);
-      expect(store.devToolsState.currentAppState, new TestState(second));
-      expect(store.devToolsState.latestAction, new TestAction(second));
+      expect(store.devToolsState.currentAppState, TestState(second));
+      expect(store.devToolsState.latestAction, TestAction(second));
 
       testReducer.updated = true;
-      store.dispatch(new DevToolsAction.recompute());
+      store.dispatch(DevToolsAction.recompute());
 
       expect(store.devToolsState.computedStates.length, 3);
       expect(store.devToolsState.stagedActions.length, 3);
       expect(
         store.devToolsState.computedStates[1],
-        new TestState("updated $first"),
+        TestState('updated $first'),
       );
       expect(
         store.devToolsState.currentAppState,
-        new TestState("updated $second"),
+        TestState('updated $second'),
       );
-      expect(store.devToolsState.latestAction, new TestAction(second));
+      expect(store.devToolsState.latestAction, TestAction(second));
     });
   });
 }
