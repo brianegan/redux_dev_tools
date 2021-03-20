@@ -10,8 +10,8 @@ You can write your own UI to travel in time, or use one of the existing options 
 
   * Flutter
     * [flutter_redux_dev_tools](https://pub.dartlang.org/packages/flutter_redux_dev_tools)
-  * Web
-    * [angular_redux_dev_tools](https://github.com/localhurst/angular_redux_dev_tools)
+  * Remote (Dart and Flutter)
+    * [redux_remote_devtools](https://pub.dev/packages/redux_remote_devtools)
     
 ## Demo
 
