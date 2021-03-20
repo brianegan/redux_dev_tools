@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+  * Make position non-nullable
+
 ## 0.6.0
 
   * Null Safety Support

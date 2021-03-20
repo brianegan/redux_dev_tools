@@ -33,10 +33,10 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
           devToolsAction,
           addToEnd
               ? state.computedStates
-              : state.computedStates.sublist(0, state.currentPosition! + 1),
+              : state.computedStates.sublist(0, state.currentPosition + 1),
           addToEnd
               ? state.stagedActions
-              : state.stagedActions.sublist(0, state.currentPosition! + 1),
+              : state.stagedActions.sublist(0, state.currentPosition + 1),
           appReducer,
         );
 
@@ -54,7 +54,7 @@ class DevToolsReducer<S> extends ReducerClass<DevToolsState<S>> {
         return DevToolsState<S>(
           state.computedStates,
           state.stagedActions,
-          devToolsAction.position,
+          devToolsAction.position!,
         );
 
       case DevToolsActionTypes.Recompute:
